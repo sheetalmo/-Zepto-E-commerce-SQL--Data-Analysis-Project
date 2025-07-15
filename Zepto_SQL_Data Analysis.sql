@@ -120,3 +120,26 @@ from zepto
 group by category
 order by avg_discount desc
 limit 5;
+
+
+-- Q6. Find the price per gram for products above 100g and sort by best value.
+SELECT DISTINCT name, weightInGms, discountedSellingPrice,
+ROUND(discountedSellingPrice/weightInGms,2) AS price_per_gram
+FROM zepto
+WHERE weightInGms >= 100
+ORDER BY price_per_gram;
+
+--Q7.Group the products into categories like Low, Medium, Bulk.
+SELECT DISTINCT name, weightInGms,
+CASE WHEN weightInGms < 1000 THEN 'Low'
+	WHEN weightInGms < 5000 THEN 'Medium'
+	ELSE 'Bulk'
+	END AS weight_category
+FROM zepto;
+
+--Q8.What is the Total Inventory Weight Per Category 
+SELECT category,
+SUM(weightInGms * availableQuantity) AS total_weight
+FROM zepto
+GROUP BY category
+ORDER BY total_weight;
